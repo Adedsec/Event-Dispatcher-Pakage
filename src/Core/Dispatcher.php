@@ -4,6 +4,8 @@
 namespace App\Core;
 
 
+use App\Tests\stubs\EventStub;
+
 class Dispatcher
 {
 
@@ -29,5 +31,12 @@ class Dispatcher
     public function hasListener($name)
     {
         return isset($this->listeners[$name]);
+    }
+
+    public function dispatch(Event $event)
+    {
+        foreach ($this->getListenerByEvent($event->getName()) as $listener) {
+            $listener->handle($event);
+        }
     }
 }
